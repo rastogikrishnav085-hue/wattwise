@@ -1,3 +1,10 @@
+# ⚡ WattWise v2
+
+> AI-powered energy intelligence for MSMEs.
+
+[🚀 Live Demo]([https://YOUR-APP-NAME.streamlit.ap](https://wattwise-uzlwy2ixy2gqegztpkx8fa.streamlit.app/)) · [📂 GitHub Repository](https://github.com/rastogikrishnav085-hue/wattwise)
+
+
 # WattWise v2 — MSME Energy Intelligence Platform
 
 SIH 2026. Zero-hardware, ML-driven energy forecasting and peak-load

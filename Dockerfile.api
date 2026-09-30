@@ -1,0 +1,17 @@
+# Dockerfile.api — WattWise FastAPI service
+FROM python:3.13-slim
+
+WORKDIR /app
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+
+ENV WATTWISE_ENV=production
+EXPOSE 8000
+
+# --workers left at 1 deliberately: security.py's rate limiter is in-process
+# memory, so more workers would each keep their own counters. Raise this only
+# after moving the rate limiter to Redis.
+CMD ["uvicorn", "api:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "1"]

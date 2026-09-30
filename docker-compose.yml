@@ -1,0 +1,66 @@
+# docker-compose.yml — WattWise production stack
+#
+# Self-hosting option (the free public route is in DEPLOYMENT.md instead).
+# Set DATABASE_URL in .env to a Postgres string to use Postgres; leave it
+# unset and the services fall back to a SQLite file on the shared volume.
+
+version: "3.9"
+
+services:
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    volumes:
+      - redis_data:/data
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    restart: unless-stopped
+    environment:
+      - WATTWISE_ENV=production
+      - REDIS_URL=redis://redis:6379/0
+      - DATABASE_URL=${DATABASE_URL:-}
+    volumes:
+      - wattwise_data:/app/data
+      - wattwise_models:/app/models
+    depends_on:
+      - redis
+    expose:
+      - "8000"
+
+  dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile.dashboard
+    restart: unless-stopped
+    environment:
+      - WATTWISE_ENV=production
+      - WATTWISE_API_URL=http://api:8000
+      - DATABASE_URL=${DATABASE_URL:-}
+    volumes:
+      - wattwise_data:/app/data
+      - wattwise_models:/app/models
+    depends_on:
+      - api
+    expose:
+      - "8501"
+
+  nginx:
+    image: nginx:alpine
+    restart: unless-stopped
+    ports:
+      - "443:443"
+      - "80:80"
+    volumes:
+      - ./nginx/wattwise.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./nginx/certs:/etc/nginx/certs:ro
+    depends_on:
+      - api
+      - dashboard
+
+volumes:
+  wattwise_data:
+  wattwise_models:
+  redis_data:

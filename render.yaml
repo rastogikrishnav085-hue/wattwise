@@ -1,0 +1,24 @@
+# Render Blueprint for the WattWise API (free plan).
+# The dashboard is NOT deployed here — it goes on Streamlit Community Cloud.
+services:
+  - type: web
+    name: wattwise-api
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn api:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.7
+      - key: WATTWISE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false   # you paste the Supabase Session-pooler string in Render's dashboard
+
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: WATTWISE_USE_GEMINI
+        value: "true"
+      - key: GEMINI_MODEL
+        value: gemini-3.8-flash

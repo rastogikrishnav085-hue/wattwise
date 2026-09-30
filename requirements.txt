@@ -1,0 +1,25 @@
+# Versions pinned to the set this project was tested with (Python 3.12).
+# Unpinned installs pull whatever is newest on the day you deploy, which is how
+# free-host deployments break overnight. Update them deliberately, then re-run the tests.
+
+pandas==3.0.6
+numpy==2.5.3
+scipy==1.18.1
+scikit-learn==1.9.1
+statsmodels==0.15.0
+streamlit==1.64.0
+plotly==7.1.0
+fastapi==0.141.1
+uvicorn[standard]==0.54.0
+pydantic==2.13.5
+python-multipart==0.0.32
+python-dotenv==1.2.3
+sqlalchemy==2.1.1
+psycopg2-binary==2.9.13
+redis==8.1.0
+fpdf2==2.8.8
+pytest==9.1.1
+httpx==0.28.1
+pypdf==6.19.0
+
+google-genai==2.25.0
